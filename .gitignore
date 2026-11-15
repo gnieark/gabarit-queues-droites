@@ -1,0 +1,31 @@
+# Construction, paquet statique et résultats des tests
+/.build/
+/dist/
+/test-results/
+
+# Environnements et caches de développement
+/.venv/
+/venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+node_modules/
+
+# Archive volumineuse des sources du moteur, régénérée par :
+# python3 scripts/install-wasm.py
+# À conserver dans les distributions publiées (scripts/package.py la vérifie).
+# Les bibliothèques WASM, polices, notices et recettes restent versionnées.
+/vendor/openscad/SOURCES.tar.gz
+
+# Exports manuels à la racine ; les éventuelles références de test restent visibles
+/*.stl
+/*.3mf
+
+# Fichiers temporaires des éditeurs et du système
+*~
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+Desktop.ini
