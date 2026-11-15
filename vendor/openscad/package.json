@@ -1,0 +1,59 @@
+{
+  "name": "@lofcz/openscad-wasm",
+  "version": "0.0.2",
+  "description": "OpenSCAD compiled to WebAssembly, with runtime extensions for fonts (text()) and the MCAD library",
+  "type": "module",
+  "main": "./openscad.js",
+  "types": "./openscad.d.ts",
+  "exports": {
+    ".": {
+      "types": "./openscad.d.ts",
+      "default": "./openscad.js"
+    },
+    "./fonts": {
+      "types": "./openscad.fonts.d.ts",
+      "default": "./openscad.fonts.js"
+    },
+    "./mcad": {
+      "types": "./openscad.mcad.d.ts",
+      "default": "./openscad.mcad.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "openscad.js",
+    "openscad.d.ts",
+    "openscad.fonts.js",
+    "openscad.fonts.d.ts",
+    "openscad.mcad.js",
+    "openscad.mcad.d.ts",
+    "openscad.wasm.js",
+    "openscad.wasm",
+    "COPYING",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lofcz/openscad-wasm.git"
+  },
+  "keywords": [
+    "openscad",
+    "wasm",
+    "webassembly",
+    "cad",
+    "3d",
+    "stl",
+    "3mf",
+    "manifold",
+    "emscripten"
+  ],
+  "author": "OpenSCAD WASM contributors",
+  "license": "GPL-2.0-only",
+  "bugs": {
+    "url": "https://github.com/lofcz/openscad-wasm/issues"
+  },
+  "homepage": "https://github.com/lofcz/openscad-wasm#readme"
+}

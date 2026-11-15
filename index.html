@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Personnalisez un peigne modulaire pour queues droites à la défonceuse et téléchargez son STL pour l’imprimer en 3D.">
+  <meta name="color-scheme" content="light">
+  <title>Générateur de gabarits pour queues droites à la défonceuse</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#outil">Aller au configurateur</a>
+  <header class="site-header">
+    <a class="blog-name" href="https://blog-du-grouik.tinad.fr/">Blog du grouik</a>
+    <nav aria-label="Navigation principale"><a href="https://blog-du-grouik.tinad.fr/">← Retour au blog</a></nav>
+  </header>
+  <main>
+    <div class="introduction">
+      <p class="eyebrow">À l’atelier · Menuiserie & impression 3D</p>
+      <h1>Générateur de gabarits pour queues droites à la défonceuse</h1>
+      <p>Des entailles régulières qui s’emboîtent : c’est le principe des queues droites. La bague à copier de la défonceuse suit les ouvertures d’un peigne pour guider la fraise.</p>
+      <p>Adaptez ici le gabarit à votre fraise, votre bague et aux dimensions de votre assemblage. Les raccords puzzle permettent d’assembler plusieurs modules pour travailler sur une plus grande largeur. Téléchargez ensuite le fichier STL et ouvrez-le dans votre logiciel de tranchage pour l’imprimer en 3D.</p>
+    </div>
+    <noscript><p class="notice error">JavaScript est nécessaire pour personnaliser le gabarit et générer le STL. Le <a href="peigne.scad" download>modèle OpenSCAD</a> reste disponible.</p></noscript>
+    <div id="boot-status" role="status">Chargement du modèle…</div>
+    <div class="configurator" id="outil" hidden>
+      <section aria-labelledby="parameters-title" class="parameters">
+        <div class="section-heading"><h2 id="parameters-title">Votre gabarit</h2><span class="small">Dimensions en mm</span></div>
+        <form id="parameters" novalidate>
+          <div id="fields"></div>
+          <button type="reset" class="button-secondary">Réinitialiser les paramètres</button>
+        </form>
+      </section>
+      <section aria-labelledby="preview-title" class="preview-panel">
+        <div class="preview-sticky">
+          <div class="section-heading"><h2 id="preview-title">Vue de dessus</h2><span class="small">Aperçu 2D</span></div>
+          <fieldset class="view-controls">
+            <legend class="visually-hidden">Affichage de l’aperçu</legend>
+            <label><input type="radio" name="view" value="single" checked> Une pièce</label>
+            <label><input type="radio" name="view" value="assembly"> Deux pièces raccordées</label>
+            <label class="guide-control"><input type="checkbox" id="show-guide"> Montrer la bague et la fraise</label>
+          </fieldset>
+          <button type="button" id="zoom-preview" class="button-secondary" aria-pressed="false" aria-controls="preview">Agrandir le dessin</button>
+          <figure>
+            <div class="drawing"><svg id="preview" role="img" aria-labelledby="svg-title svg-desc" xmlns="http://www.w3.org/2000/svg"></svg></div>
+            <figcaption id="preview-caption">Profil du gabarit, cotes en millimètres.</figcaption>
+          </figure>
+          <dl id="measurements" class="measurements"></dl>
+          <p class="small counterpiece">Pour la contre-pièce, prévoyez une butée externe permettant le décalage indiqué.</p>
+          <div id="validation" aria-live="polite" aria-atomic="true"></div>
+          <div class="download-area">
+            <button type="button" id="download" class="button-primary">Télécharger le STL</button>
+            <button type="button" id="cancel" class="button-secondary" hidden>Annuler</button>
+            <p class="small">Le STL contient toujours <strong>une seule pièce</strong>, même si l’aperçu en montre deux. Le calcul s’effectue dans votre navigateur.</p>
+            <p id="generation-status" role="status" aria-live="polite"></p>
+            <a id="download-again" hidden>Télécharger à nouveau ce STL</a>
+            <details id="compile-details" hidden><summary>Détails du calcul</summary><pre id="compile-log"></pre></details>
+          </div>
+        </div>
+      </section>
+    </div>
+    <section class="notes" aria-labelledby="notes-title">
+      <h2 id="notes-title">Du gabarit à l’atelier</h2>
+      <p>La longueur des doigts correspond à leur partie droite, hors extrémités arrondies. Elle ne règle pas la profondeur de coupe. Les inscriptions rappellent les diamètres et la largeur des queues ; l’adresse du blog est gravée sur la tranche arrière.</p>
+      <p>Avant votre assemblage, vérifiez l’emboîtement des modules imprimés et faites un essai sur une chute avec votre fraise et votre bague.</p>
+      <p>Sur le blog : <a href="https://blog-du-grouik.tinad.fr/post/2026/11/09/Dessiner-des-gabarits-pour-bague-%C3%A0-copier-d%C3%A9fonceuse">comprendre le dessin d’un gabarit pour bague à copier</a>.</p>
+      <p><a href="peigne.scad" download>Télécharger le modèle OpenSCAD</a> · <a href="README.md">Documentation et installation</a></p>
+    </section>
+  </main>
+  <footer><a href="https://blog-du-grouik.tinad.fr/">Blog du grouik</a> · Un outil pour l’atelier, par Gnieark. <a href="THIRD_PARTY_NOTICES.md">Logiciels libres et licences</a> · <a href="vendor/openscad/SOURCES.tar.gz" download>Sources d’OpenSCAD WASM et de ses dépendances</a></footer>
+</body>
+</html>

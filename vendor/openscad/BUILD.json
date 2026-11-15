@@ -1,0 +1,36 @@
+{
+  "repository": "https://github.com/lofcz/openscad-wasm",
+  "distribution": "@lofcz/openscad-wasm@0.0.2",
+  "npm_integrity": "sha512-bmvfseOkgn5+8Nj7VC2UP57gQddZ42ILZ9PZ9L2WQc+8oUlq2WtUJ5A9s/0Xw7ijvUzkY+nAnnhXxdC5WHM4kQ==",
+  "revision": "96c8ea8f6a676920e8d21858ae2c603fde2c7c4d",
+  "dependencies": {
+    "cairo": "4541e0cd3a751b85e52e2a83d02ac6145a5efa85",
+    "liblzma": "87b7682ce4b1c849504e2b3641cebaad62aaef87",
+    "harfbuzz": "4c2aa804671d7276e8a0eb95da07202ead05c843",
+    "doubleconversion": "9dd6227ee3e29807183e56877f0282aeb40b8b1e",
+    "lib3mf": "a40026036cd89e2e2eaaf2ce7777fbad2b0d631c",
+    "libffi": "5c1c43091ed611fdea774374355eb938c73a9157",
+    "fontconfig": "a4e25ec391d417e4bca052fbfa5cd7ce5f7fd39e",
+    "openscad": "04834adb1ba3c9a6e4160747c91cbadbce9c37b3",
+    "glib": "3994b22020c9f61121ebbc902f19cfe906dd745b",
+    "zlib": "da607da739fa6047df13e66a2af6b8bec7c2a498",
+    "freetype": "0a0221a1347e2f1e07c395263540026e9a0aa7c7",
+    "cgal": "cefe3007d59cf4292a09da4fa8a35f38478a4e0b",
+    "eigen": "bc3b39870ecb690a623a3f49149a358b95c5781d",
+    "libzip": "6f8a0cdd24a0dc6cce9dac4a7679da784ab124ea",
+    "libxml2": "c94eb0210183b9d7cb43f8e7fddc6be55843ef49",
+    "libexpat": "c61098da494eea1cbd091118118dcee417faacea"
+  },
+  "pthread": false,
+  "sources": "SOURCES.tar.gz",
+  "sha256": {
+    "npm-metadata.json": "2a079f7b6fb43e1508c2d36ca508c3ef159528d634cbc51936a45dbbf579d1bd",
+    "COPYING": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+    "SOURCES.tar.gz": "6960f83d31b39d4060b7fa1123a7fb3ab732eedc50f909491c83acd50d2a33ae",
+    "openscad.wasm.js": "6216e976af1ec0d112f9dee883a7648bf8d8b3eeca0b638ff7ac02b1f018a048",
+    "README.md": "85b72ab7569193d348afbea0133867365dab3b867a03f42c3cc6f9d3480738af",
+    "openscad.wasm": "729c5436bb938ec0ecb5f0a6cb8871b3580476f608daaa15d94803d8990a2b85",
+    "package.json": "f9ad751c181a71785b7498531b430b53ba42260ade6d614d78ebf9fcec8fb5fa",
+    "openscad.js": "a5914096974fd56f9388dc01233b8e3993db048db249389d62e017bb6d3730c5"
+  }
+}

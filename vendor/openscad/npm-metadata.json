@@ -1,0 +1,92 @@
+{
+  "bugs": {
+    "url": "https://github.com/lofcz/openscad-wasm/issues"
+  },
+  "dist": {
+    "shasum": "ad7e01a80cf3be428a2167fa3320fee4df438cd3",
+    "tarball": "https://registry.npmjs.org/@lofcz/openscad-wasm/-/openscad-wasm-0.0.2.tgz",
+    "fileCount": 11,
+    "integrity": "sha512-bmvfseOkgn5+8Nj7VC2UP57gQddZ42ILZ9PZ9L2WQc+8oUlq2WtUJ5A9s/0Xw7ijvUzkY+nAnnhXxdC5WHM4kQ==",
+    "signatures": [
+      {
+        "sig": "MEUCIFuZ5OcCHu6JzWjo9+phRPlnlNXG/+FtBaC9cunODNZNAiEAovFpmrVgOHqiVfXA3uJr0VaLjONQHBf4rhSMBCesz+c=",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "attestations": {
+      "url": "https://registry.npmjs.org/-/npm/v1/attestations/@lofcz%2fopenscad-wasm@0.0.2",
+      "provenance": {
+        "predicateType": "https://slsa.dev/provenance/v1"
+      }
+    },
+    "unpackedSize": 19883925
+  },
+  "main": "./openscad.js",
+  "name": "@lofcz/openscad-wasm",
+  "type": "module",
+  "types": "./openscad.d.ts",
+  "author": {
+    "name": "OpenSCAD WASM contributors"
+  },
+  "exports": {
+    ".": {
+      "types": "./openscad.d.ts",
+      "default": "./openscad.js"
+    },
+    "./mcad": {
+      "types": "./openscad.mcad.d.ts",
+      "default": "./openscad.mcad.js"
+    },
+    "./fonts": {
+      "types": "./openscad.fonts.d.ts",
+      "default": "./openscad.fonts.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "gitHead": "96c8ea8f6a676920e8d21858ae2c603fde2c7c4d",
+  "license": "GPL-2.0-only",
+  "_npmUser": {
+    "name": "GitHub Actions",
+    "email": "npm-oidc-no-reply@github.com",
+    "trustedPublisher": {
+      "id": "github",
+      "oidcConfigId": "oidc:78ef556b-36ee-4385-abf6-c2e7018b3007"
+    }
+  },
+  "homepage": "https://github.com/lofcz/openscad-wasm#readme",
+  "keywords": [
+    "openscad",
+    "wasm",
+    "webassembly",
+    "cad",
+    "3d",
+    "stl",
+    "3mf",
+    "manifold",
+    "emscripten"
+  ],
+  "repository": {
+    "url": "git+https://github.com/lofcz/openscad-wasm.git",
+    "type": "git"
+  },
+  "_npmVersion": "11.19.0",
+  "description": "OpenSCAD compiled to WebAssembly, with runtime extensions for fonts (text()) and the MCAD library",
+  "directories": {},
+  "maintainers": [
+    {
+      "name": "lofcz",
+      "email": "lordoffliescz@gmail.com"
+    }
+  ],
+  "_nodeVersion": "24.20.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "_hasShrinkwrap": false,
+  "_npmOperationalInternal": {
+    "tmp": "tmp/openscad-wasm_0.0.2_1788397622650_0.2607782109715744",
+    "host": "s3://npm-registry-packages-npm-production"
+  },
+  "_id": "@lofcz/openscad-wasm@0.0.2",
+  "version": "0.0.2"
+}
