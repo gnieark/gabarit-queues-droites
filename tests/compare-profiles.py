@@ -12,15 +12,22 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 CASES = {
     'defaults': {},
+    'original-without-notch': {'encoche_calage': False},
+    'spacer-inside': {'ajouter_cale': True},
+    'spacer-rotated-inside': {'ajouter_cale': True, 'largeur_queue': 40, 'longueur_queues': 45, 'diametre_bague': 12},
+    'spacer-outside': {'ajouter_cale': True, 'longueur_queues': 8},
+    'spacer-wide': {'ajouter_cale': True, 'largeur_queue': 45, 'diametre_bague': 12, 'longueur_queues': 8},
+    'spacer-without-notch': {'ajouter_cale': True, 'encoche_calage': False, 'nombre_dents': 1, 'profondeur_puzzle': 8},
+    'spacer-countersinks': {'ajouter_cale': True, 'trous_fixation': True, 'fraisure_vis': True},
     'zero-clearance': {'jeu_emboitement': 0},
     'no-compensation': {'diametre_bague': 12},
     'holes': {'trous_fixation': True},
     'countersinks': {'trous_fixation': True, 'fraisure_vis': True},
-    'one-tooth': {'nombre_dents': 1, 'profondeur_puzzle': 8},
+    'one-tooth': {'nombre_dents': 1, 'profondeur_puzzle': 8, 'encoche_calage': False},
     'anisotropic-puzzle': {'profondeur_puzzle': 28, 'largeur_dos': 22, 'jeu_emboitement': 0.7},
     'thin-teeth': {'largeur_queue': 15},
     'large': {'nombre_dents': 8, 'largeur_queue': 30, 'diametre_bague': 30, 'longueur_queues': 75},
-    'short-fingers': {'longueur_queues': 0.5, 'largeur_dos': 12, 'jeu_emboitement': 0.45},
+    'short-fingers': {'encoche_calage': False, 'longueur_queues': 0.5, 'largeur_dos': 12, 'jeu_emboitement': 0.45},
 }
 
 def svg_paths(filename):

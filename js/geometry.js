@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 import '../vendor/clipper/clipper.js';
-import { derived } from './parameters.js';
+import { derived, spacerPlacement } from './parameters.js';
 
 const C = globalThis.ClipperLib;
 // Même grille entière que l'export 2D d'OpenSCAD 2021.01.
@@ -51,12 +51,14 @@ export function puzzlePoints(p) {
 const circle = (x,y,r) => polygon(arcPoints([x,y],r,0,360,FN).slice(0,-1));
 
 // Correspondance directe avec languette(), dos(), doigts(), profil().
-// Le STL n'utilise jamais ce code : il compile le SCAD original.
+// Le STL n'utilise jamais ce code : il compile le SCAD de référence.
 export function profile(p) {
   const d = derived(p);
   const tab = polygon([...puzzlePoints(p), [EPSILON,p.largeur_dos],[EPSILON,0]]);
-  const back = subtract(union([rectangle(0,0,d.longueur_piece,p.largeur_dos),tab]),
+  let back = subtract(union([rectangle(0,0,d.longueur_piece,p.largeur_dos),tab]),
     translate(offset([tab],p.jeu_emboitement),d.longueur_piece,0));
+  if (p.encoche_calage) back = subtract(back,
+    [rectangle(p.largeur_queue,p.largeur_dos-d.profondeur_encoche,2*p.largeur_queue,d.profondeur_encoche+EPSILON)]);
   const slots = [];
   for (let i=-1;i<p.nombre_dents;i++) {
     slots.push(...offset([rectangle(i*d.pas+p.largeur_queue,-p.diametre_bague-1,
@@ -71,4 +73,19 @@ export function profile(p) {
 }
 export function pathData(paths) {
   return paths.map(path => path.map(([x,y],i) => `${i ? 'L' : 'M'}${x},${-y}`).join(' ')+' Z').join(' ');
+}
+
+export function spacerProfile(p, modules = 1) {
+  const d=derived(p), c=spacerPlacement(p,modules), w=d.largeur_cale;
+  const paths=subtract(union([
+    rectangle((w-20)/2,0,20,20),
+    rectangle((w-p.largeur_queue)/2,20,p.largeur_queue,10),
+  ]),[circle(w/2,10,p.diametre_vis/2)]);
+  return paths.map(path=>path.map(({X,Y})=>{
+    const x=X/SCALE,y=Y/SCALE;
+    return c.angle===90 ? [c.x+30-y,c.y+x] : [c.x+x,c.y+y];
+  }));
+}
+export function printProfile(p) {
+  return [...profile(p),...(p.ajouter_cale ? spacerProfile(p) : [])];
 }

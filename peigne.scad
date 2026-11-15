@@ -4,7 +4,7 @@
    Par Gnieark 2026,  https://blog-du-grouik.tinad.fr/
    distribué sous Gnieark's licence V1.0 
    
-   Le decalage de la contre-piece (largeur_queue) demande une butee externe.
+   La cale fixe dans l'encoche permet de decaler le peigne de largeur_queue.
 */
 
 /* [Guidage] */
@@ -22,6 +22,12 @@ epaisseur = 8;
 jeu_emboitement = 0.1;
 largeur_dos = 40;
 profondeur_puzzle = 20;
+
+/* [Calage] */
+// Deux butees distantes de 2*largeur_queue, sans jeu lateral.
+encoche_calage = true;
+// Une seule cale separee est ajoutee au plateau, jamais un second peigne.
+ajouter_cale = false;
 
 /* [Fixations] */
 trous_fixation = false;
@@ -55,6 +61,30 @@ epsilon = 0.01;
 fraisure_active = trous_fixation && fraisure_vis;
 profondeur_fraisure = fraisure_active && angle_fraisure>0 && angle_fraisure<180
     ? (diametre_tete_vis-diametre_vis)/(2*tan(angle_fraisure/2)) : 0;
+
+// La profondeur seule recoit le jeu ; les faces laterales sont les references.
+profondeur_encoche = 10+jeu_emboitement;
+hauteur_dos_utile = largeur_dos-(encoche_calage ? profondeur_encoche : 0);
+largeur_cale = max(20,largeur_queue);
+// Zone arriere intacte : rester hors de l'enveloppe du raccord femelle.
+url_droite = longueur_piece-profondeur_puzzle-jeu_emboitement-3*largeur_queue;
+url_a_droite = url_droite>=largeur_queue;
+largeur_url = encoche_calage ? (url_a_droite ? url_droite : largeur_queue) : longueur_piece;
+centre_url = encoche_calage ? (url_a_droite ? 3*largeur_queue+url_droite/2 : largeur_queue/2) : longueur_piece/2;
+function distance_encoche(x) = sqrt(
+    pow(max(largeur_queue-x,0,x-3*largeur_queue),2)+
+    pow(max(largeur_dos/2-profondeur_encoche,0),2));
+
+assert(!encoche_calage || (hauteur_dos_utile>2 &&
+       3*largeur_queue+2<longueur_piece-profondeur_puzzle-jeu_emboitement),
+       "Encoche : agrandir le dos / le module, reduire le raccord ou desactiver l'encoche.");
+assert(!encoche_calage || !trous_fixation ||
+       min([for(x=[longueur_piece/4,3*longueur_piece/4]) distance_encoche(x)])>
+       (fraisure_active ? diametre_tete_vis : diametre_vis)/2+1,
+       "Encoche trop proche des trous ou fraisures : agrandir le dos ou reduire les diametres.");
+assert(!ajouter_cale || (diametre_vis>0 && diametre_vis+2<20),
+       "Cale : le diametre de vis doit etre positif et laisser de la matiere dans le carre de 20 mm.");
+assert(!inscriptions || largeur_url>4, "Pas assez de place sur la tranche pour l'URL.");
 
 assert(epaisseur>0 && longueur_queues>0 && largeur_queue>0,
        "Les dimensions doivent etre positives.");
@@ -113,6 +143,9 @@ module dos() {
         // La cavite provient du meme profil que le male.
         translate([longueur_piece,0])
             offset(delta=jeu_emboitement) languette();
+        if(encoche_calage)
+            translate([largeur_queue,largeur_dos-profondeur_encoche])
+                square([2*largeur_queue,profondeur_encoche+epsilon]);
     }
 }
 
@@ -156,20 +189,20 @@ module gravures() {
                       trous_fixation ? longueur_piece/2-diametre_logement-4
                                      : longueur_piece-4);
     assert(largeur_zone>0, "Pas assez de place pour les inscriptions.");
-    taille_dessus = min(taille_texte, largeur_dos/8,
+    taille_dessus = min(taille_texte, hauteur_dos_utile/8,
                        largeur_zone/(0.85*max([for(l=lignes) len(l)])));
     for(i=[0:2])
         translate([longueur_piece/2,
-                   racine+largeur_dos/2+(1-i)*2*taille_dessus,
+                   racine+hauteur_dos_utile/2+(1-i)*2*taille_dessus,
                    epaisseur-profondeur_gravure])
             linear_extrude(height=profondeur_gravure+epsilon)
                 texte_grave(lignes[i],taille_dessus);
 
     url = "https://blog-du-grouik.tinad.fr/";
     taille_url = min(taille_texte,epaisseur/2,
-                    (longueur_piece-4)/(0.85*len(url)));
+                    (largeur_url-4)/(0.85*len(url)));
     // Face arriere (+Y). Le texte est lisible de l'exterieur, haut vers +Z.
-    translate([longueur_piece/2,racine+largeur_dos-profondeur_gravure,epaisseur/2])
+    translate([centre_url,racine+largeur_dos-profondeur_gravure,epaisseur/2])
         rotate([90,0,180])
             linear_extrude(height=profondeur_gravure+epsilon)
                 texte_grave(url,taille_url);
@@ -191,13 +224,52 @@ module piece() {
     }
 }
 
+// Cale : tete 20x20, languette largeur_queue x 10, trou toujours traversant.
+module profil_cale() {
+    difference() {
+        union() {
+            translate([(largeur_cale-20)/2,0]) square([20,20]);
+            translate([(largeur_cale-largeur_queue)/2,20])
+                square([largeur_queue,10]);
+        }
+        translate([largeur_cale/2,10]) circle(d=diametre_vis);
+    }
+}
+// Placement sans contact (2 mm) : entre les doigts si possible, sinon comparer
+// les deux orientations sur les quatre cotes du plateau et minimiser sa surface.
+function surface_plateau(c,modules) =
+    (max(modules*longueur_piece,c[0]+c[3])-min(-profondeur_puzzle,c[0]))*
+    (max(racine+largeur_dos,c[1]+c[4])-min(-largeur_dent/2,c[1]));
+function placement_cale(modules=1) =
+    nombre_dents>=2 && largeur_queue+2*compensation>=largeur_cale+4 && longueur_queues>=34
+    ? [1.5*largeur_queue-largeur_cale/2,2,0,largeur_cale,30,true]
+    : nombre_dents>=2 && largeur_queue+2*compensation>=34 && longueur_queues>=largeur_cale+4
+    ? [1.5*largeur_queue-15,2,90,30,largeur_cale,true]
+    : let(candidats=[for(a=[0,90]) let(w=a==0 ? largeur_cale : 30,h=a==0 ? 30 : largeur_cale)
+        each [[-profondeur_puzzle,racine+largeur_dos+2,a,w,h,false],
+              [-profondeur_puzzle,-largeur_dent/2-2-h,a,w,h,false],
+              [modules*longueur_piece+2,-largeur_dent/2,a,w,h,false],
+              [-profondeur_puzzle-2-w,-largeur_dent/2,a,w,h,false]]],
+          surfaces=[for(c=candidats) surface_plateau(c,modules)],
+          index=search(min(surfaces),surfaces)[0]) candidats[index];
+module cale_placee(modules=1) {
+    c=placement_cale(modules);
+    translate([c[0]+(c[2]==90 ? 30 : 0),c[1]])
+        rotate(c[2]) profil_cale();
+}
+
 echo(pas=pas, ouverture=largeur_queue+2*compensation,
      largeur_dent=largeur_dent, longueur_raccordement=longueur_piece,
      decalage_contre_piece=largeur_queue);
 if(largeur_dent<4) echo("ATTENTION : doigts de moins de 4 mm, verifier leur rigidite.");
-if(mode=="profil") profil();
+if(mode=="profil") {
+    profil();
+    if(ajouter_cale) cale_placee();
+}
 else {
     piece();
+    if(ajouter_cale)
+        linear_extrude(height=epaisseur) cale_placee(mode=="assemblage" ? 2 : 1);
     if(mode=="assemblage")
         translate([longueur_piece,0,0]) color("orange") piece();
 }

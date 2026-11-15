@@ -127,6 +127,9 @@ if __name__=='__main__':
     server=ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Handler,directory=str(ROOT)))
     thread=threading.Thread(target=server.serve_forever,daemon=True)
     thread.start()
+    # Les références doivent suivre le SCAD courant, jamais un ancien STL en cache.
+    for variant,overrides in [('default',{}),('plain',{'inscriptions':False}),('holes',{'inscriptions':False,'trous_fixation':True}),('countersinks',{'inscriptions':False,'trous_fixation':True,'fraisure_vis':True})]:
+        native(variant,overrides)
     results=[]
     try:
         with sync_playwright() as playwright:

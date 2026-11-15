@@ -1,3 +1,56 @@
+# Extension encoche et cale — 15 novembre 2026
+
+Le modèle courant ajoute le calage demandé. SHA-256 de `peigne.scad` :
+`d450c1c78ac22aa41e81ee6a4ecb6b5a7fcd79402a9ac9e7307917fce5591d26`.
+Le modèle initial est archivé dans `tests/fixtures/peigne-original.scad`.
+Le bilan du 14 novembre ci-dessous décrit la version précédente.
+
+## Vérifications de cette extension
+
+- **47 configurations** : mêmes acceptations et refus JavaScript / OpenSCAD,
+  y compris encombrement de l’encoche, proximité des fixations et diamètre de
+  vis de la cale, même lorsque les trous du peigne sont désactivés.
+- **17 profils** comparés à OpenSCAD natif : cale intérieure, tournée, extérieure,
+  large, sans encoche, avec fixations, et cas antérieurs. Écart maximal des
+  contours **0,000561 mm**, des surfaces **0,006767 mm²**.
+- `tests/calage-mechanics.py` compare le profil sans calage au modèle initial
+  (écart inférieur à 1e-9 mm), puis vérifie indépendamment les deux flancs,
+  leur position, la profondeur et la surface retirée sur cinq configurations.
+  La largeur de languette mesurée dans le profil donne une course de W,
+  y compris pour un jeu de 0,7 mm : le jeu ne modifie pas le décalage.
+- **20 téléchargements STL** : les trois suites navigateur passent dans Chromium
+  et Firefox. Quatre variantes antérieures, le cas combiné et cinq variantes de
+  calage par navigateur. Chaque STL est comparé à une référence native issue du
+  modèle courant, et non aux fichiers de la livraison précédente.
+- Dans les cas de cale sans inscriptions : contrôle des **deux solides fermés**,
+  de leur séparation, de l’encombrement de la cale, du volume analytique
+  carré + languette − trou, de l’épaisseur 8 mm et du trou traversant.
+  La vue assemblée produit toujours un seul peigne dans le STL.
+- Gravures et URL complètes, trous et fraisures vérifiés ensemble avec la cale.
+  Les 44 contours de l’URL sont retrouvés dans les deux moteurs.
+- Paramètres conditionnels, remise à zéro, erreurs de paramètres et de compilation,
+  absence de police, annulation et instantané des paramètres pendant la génération.
+- Aperçus simples / assemblés, cale extérieure, largeur mobile 320 / 390 px,
+  zoom au clavier, et absence de requêtes vers un service de calcul.
+
+Fichiers de résultats courants : `test-results/browser-results.json`,
+`options-results.json`, `calage-results.json` ; captures `*-calage-*.png`.
+Les références natives sont régénérées au lancement normal des suites.
+
+## Limites toujours présentes
+
+La différence de placement des caractères avec OpenSCAD 2021.01 subsiste :
+jusqu’à **0,500480 mm** sur le dessus et **0,413989 mm** pour l’URL déplacée et
+réduite. Les contours de lettres correspondent après translation (écart de forme
+inférieur à **0,002435 mm**). Les sections mécaniques comparées concordent à
+moins de **0,000494 mm**. Ne pas présenter les STL gravés comme strictement identiques.
+
+Aucun essai physique d’impression ou d’usinage, ni test sur appareil Android ou
+Windows réel. Les dimensions de calage sont nominales ; leur précision imprimée
+reste à mesurer. L’audit axe de la livraison précédente n’a pas été renouvelé.
+
+---
+
 # Bilan de validation — 14 novembre 2026
 
 ## Environnement

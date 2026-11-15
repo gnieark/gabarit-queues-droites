@@ -546,3 +546,5 @@ footer { border-top: 3px solid #2b3e42; }
 .drawing.zoomed { display: block; overflow: auto; }
 .drawing.zoomed svg { width: 900px; max-width: none; max-height: none; }
 .preview-panel, .parameters { min-width: 0; }
+
+.spacer { fill:#adc4c1; stroke:#3c6460; stroke-width:1.2; vector-effect:non-scaling-stroke; }

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-import { groups, fields, defaultsFromSCAD, enabled, validate, format } from './parameters.js';
+import { groups, fields, defaultsFromSCAD, enabled, validate, format, spacerPlacement } from './parameters.js';
 import { drawPreview } from './preview.js';
 
 const $ = id => document.getElementById(id);
@@ -54,6 +54,7 @@ function buildForm() {
         const help = document.createElement('small');
         help.id = `${key}-hint`;
         help.textContent = hint;
+        if (unit === 'boolean') input.setAttribute('aria-describedby', help.id);
         container.append(help);
       }
       fieldset.append(container);
@@ -130,12 +131,24 @@ function update() {
   for (const [label,value] of [
     ['Largeur réelle des dents',d.largeur_dent],['Ouverture de guidage',d.ouverture],
     ['Longueur du module, raccord inclus',d.encombrement],['Décalage de la contre-pièce',d.decalage],
+    ...(current.encoche_calage ? [['Largeur de l’encoche',2*current.largeur_queue],['Profondeur de l’encoche',d.profondeur_encoche]] : []),
   ]) {
     const group = document.createElement('div'), dt = document.createElement('dt'), dd = document.createElement('dd');
     dt.textContent = label; dd.textContent = `${format(value)} mm`;
     group.append(dt,dd); $('measurements').append(group);
   }
-  $('preview-caption').textContent = `Profil à l’échelle relative, cotes en mm. ${assembled ? 'Le deuxième module est décalé du pas de raccordement. ' : ''}${current.inscriptions ? 'Dimensions gravées sur le dessus et URL sur la tranche arrière (non dessinées). ' : 'Sans inscriptions. '}${d.fraisure_active ? 'Cercles pointillés : fraisures.' : ''}${$('show-guide').checked ? ' En bleu : bague (contour extérieur) et fraise (centre).' : ''}`;
+  const guideVisible=$('show-guide').checked && (!current.ajouter_cale || !spacerPlacement(current).inside || current.nombre_dents>2);
+  $('preview-caption').textContent = `Profil à l’échelle relative, cotes en mm. ${assembled ? 'Le deuxième module est décalé du pas de raccordement. ' : ''}${current.inscriptions ? 'Dimensions gravées sur le dessus et URL sur la tranche arrière (non dessinées). ' : 'Sans inscriptions. '}${d.fraisure_active ? 'Cercles pointillés : fraisures.' : ''}${guideVisible ? ' En bleu : bague (contour extérieur) et fraise (centre).' : ''}`;
+  if (current.ajouter_cale) {
+    const placement=spacerPlacement(current,assembled?2:1);
+    $('preview-caption').textContent += ` Cale en vert : carré 20 × 20 mm, languette ${format(current.largeur_queue)} × 10 mm, trou Ø ${format(current.diametre_vis)} mm. ${placement.inside ? 'Placée entre les doigts pour ne pas agrandir le plateau.' : 'Placée à côté du peigne avec un espace de 2 mm.'}`;
+    if (placement.inside && current.nombre_dents<=2 && $('show-guide').checked)
+      $('preview-caption').textContent += ' La bague est masquée car la cale occupe l’ouverture.';
+  }
+  $('calage-help').textContent = current.encoche_calage
+    ? 'Fixez la cale par sa vis. Placez un flanc de la languette contre un côté de l’encoche, puis faites coulisser le peigne jusqu’à l’autre butée : le déplacement nominal vaut une largeur de queue. Immobilisez le peigne avant chaque usinage.'
+    : 'Pour la contre-pièce, repérez un décalage d’une largeur de queue, par exemple avec une cale ou une butée.';
+  $('stl-content').textContent = `Le STL contient un seul peigne${current.ajouter_cale ? ' et une cale séparée' : ''}, même si l’aperçu montre deux modules. Le calcul s’effectue dans votre navigateur.`;
   if (previewLimited) $('preview-caption').textContent = 'L’aperçu est masqué au-delà de 200 dents pour préserver la réactivité. Le calcul STL reste disponible, dans les limites de mémoire de votre navigateur.';
 }
 
@@ -183,7 +196,7 @@ function generate() {
         downloadURL = URL.createObjectURL(new Blob([data.buffer],{type:'model/stl'}));
         const link = $('download-again');
         link.href = downloadURL;
-        link.download = `peigne_${snapshot.largeur_queue}mm_${snapshot.nombre_dents}dents.stl`;
+        link.download = `peigne_${snapshot.largeur_queue}mm_${snapshot.nombre_dents}dents${snapshot.ajouter_cale ? '_avec_cale' : ''}.stl`;
         link.hidden = false;
         link.click();
         status(`STL généré : ${link.download}. Le téléchargement a été lancé. Ces paramètres sont ceux du début du calcul.`);

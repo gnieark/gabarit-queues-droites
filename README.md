@@ -4,8 +4,10 @@ Application statique en français : formulaire, aperçu SVG instantané, export 
 par OpenSCAD WebAssembly dans un Web Worker. Aucun serveur de calcul, compte,
 CMS, CDN, framework frontend ou API distante n'est utilisé à l'exécution.
 
-`peigne.scad` est le modèle original, conservé sans modification. Le STL compile
-ce fichier avec des paramètres `-D`, toujours en `mode="piece"`.
+`peigne.scad` est le modèle de référence, enrichi de l’encoche et de la cale de
+calage. Le STL compile ce fichier avec des paramètres `-D`, toujours en
+`mode="piece"` : un peigne, accompagné d’une cale séparée si elle est demandée.
+Le modèle initial est conservé dans `tests/fixtures/peigne-original.scad`.
 
 ## Lancer l'application
 
@@ -76,7 +78,43 @@ disponibilité lors de la redistribution ; ne pas omettre les notices de `vendor
 Les trois valeurs souvent confondues sont distinctes : longueur du corps / pas
 de raccordement (`nombre_dents × 2 × largeur_queue`), encombrement avec languette
 (`longueur_piece + profondeur_puzzle`) et décalage de contre-pièce (`largeur_queue`).
-Le décalage nécessite une butée externe, comme le précise le modèle.
+L’encoche arrière permet ce décalage avec une cale fixe ; elle peut être désactivée
+pour retrouver le profil initial, notamment sur les modules trop courts.
+
+## Encoche et cale de calage
+
+- `encoche_calage = true` par défaut : encoche rectangulaire au dos, début à
+  `largeur_queue` du coin arrière côté puzzle mâle (x = 0, hors languette puzzle).
+  Sa largeur est exactement `2 × largeur_queue`, sa profondeur `10 + jeu_emboitement`.
+  Aucun bossage ni jeu latéral : les deux flancs servent de références.
+- `ajouter_cale = false` par défaut : option indépendante ajoutant une cale au STL.
+  Tête carrée 20 × 20 mm, trou central traversant de diamètre `diametre_vis`,
+  languette centrée de largeur `largeur_queue` et de longueur 10 mm. Épaisseur
+  identique au peigne, sans jeu ajouté ni fraisure sur la cale. Le diamètre de vis
+  est réglable dès que la cale ou les fixations du peigne sont activées.
+- La cale se place entre les doigts si son encombrement le permet (rotation de
+  90° examinée aussi), avec 2 mm de séparation. Sinon, le modèle compare les deux
+  orientations sur les quatre côtés du peigne et choisit la plus petite surface
+  de plateau parmi ces placements. Ce n’est pas un solveur de placement général.
+- L’aperçu assemblé ne change pas le contenu téléchargé : toujours un seul peigne
+  et, si demandée, une seule cale. Le nom du fichier reçoit le suffixe `_avec_cale`.
+- Pour décaler le peigne, immobiliser la cale par sa vis et amener successivement
+  ses flancs contre les deux côtés de l’encoche. La course nominale vaut
+  `2 × largeur_queue − largeur_queue = largeur_queue`, indépendamment du jeu.
+  Immobiliser le peigne avant l’usinage. La languette peut aussi servir de cale
+  de mesure pour déplacer la planche. Cela ne définit pas automatiquement
+  l’espacement de deux planches placées côte à côte : celui-ci dépend de leur largeur.
+- Le modèle refuse une encoche qui entame l’enveloppe du raccord femelle (marge
+  de 2 mm), laisse au plus 2 mm de dos, ou passe à moins de 1 mm du bord d’un trou
+  ou d’une fraisure. Agrandir les dimensions ou désactiver l’encoche dans ces cas.
+  Le trou de la cale doit avoir un diamètre positif et inférieur à 18 mm.
+- Les inscriptions du dessus restent dans le dos plein. L’URL complète est
+  déplacée sur la plus grande des deux portions arrière réservées, hors de
+  l’enveloppe du raccord femelle, et sa taille s’adapte à la place disponible.
+
+Les dimensions de calage sont nominales : aucune compensation de retrait ou de
+surépaisseur d’impression n’est ajoutée. Mesurer les pièces imprimées et faire
+un essai sur une chute avant l’assemblage définitif.
 
 ## Modifier le modèle ou les paramètres
 
@@ -129,6 +167,7 @@ désactivées automatiquement.
 # Python standard, GJS et OpenSCAD local
 gjs -m tests/validate-parameters.js
 python3 tests/compare-profiles.py
+python3 tests/calage-mechanics.py
 
 # Tests réels Chromium / Firefox
 python3 -m venv .venv
@@ -136,6 +175,7 @@ python3 -m venv .venv
 .venv/bin/python -m playwright install chromium firefox
 .venv/bin/python tests/browser.py
 .venv/bin/python tests/browser_options.py
+.venv/bin/python tests/browser_calage.py
 ```
 
 Les tests navigateur lancent leur propre serveur HTTP statique, téléchargent

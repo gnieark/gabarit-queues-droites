@@ -47,12 +47,12 @@
             <figcaption id="preview-caption">Profil du gabarit, cotes en millimètres.</figcaption>
           </figure>
           <dl id="measurements" class="measurements"></dl>
-          <p class="small counterpiece">Pour la contre-pièce, prévoyez une butée externe permettant le décalage indiqué.</p>
+          <p id="calage-help" class="small counterpiece"></p>
           <div id="validation" aria-live="polite" aria-atomic="true"></div>
           <div class="download-area">
             <button type="button" id="download" class="button-primary">Télécharger le STL</button>
             <button type="button" id="cancel" class="button-secondary" hidden>Annuler</button>
-            <p class="small">Le STL contient toujours <strong>une seule pièce</strong>, même si l’aperçu en montre deux. Le calcul s’effectue dans votre navigateur.</p>
+            <p id="stl-content" class="small"></p>
             <p id="generation-status" role="status" aria-live="polite"></p>
             <a id="download-again" hidden>Télécharger à nouveau ce STL</a>
             <details id="compile-details" hidden><summary>Détails du calcul</summary><pre id="compile-log"></pre></details>
@@ -63,6 +63,7 @@
     <section class="notes" aria-labelledby="notes-title">
       <h2 id="notes-title">Du gabarit à l’atelier</h2>
       <p>La longueur des doigts correspond à leur partie droite, hors extrémités arrondies. Elle ne règle pas la profondeur de coupe. Les inscriptions rappellent les diamètres et la largeur des queues ; l’adresse du blog est gravée sur la tranche arrière.</p>
+      <p>L’encoche arrière et la cale optionnelle permettent de déplacer le peigne d’une largeur de queue. Le jeu est réservé au fond de l’encoche ; ses deux côtés servent de butées. Cette cote est nominale : vérifiez les dimensions après impression.</p>
       <p>Avant votre assemblage, vérifiez l’emboîtement des modules imprimés et faites un essai sur une chute avec votre fraise et votre bague.</p>
       <p>Sur le blog : <a href="https://blog-du-grouik.tinad.fr/post/2026/11/09/Dessiner-des-gabarits-pour-bague-%C3%A0-copier-d%C3%A9fonceuse">comprendre le dessin d’un gabarit pour bague à copier</a>.</p>
       <p><a href="peigne.scad" download>Télécharger le modèle OpenSCAD</a> · <a href="README.md">Documentation et installation</a></p>

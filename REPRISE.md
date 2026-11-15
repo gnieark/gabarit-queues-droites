@@ -1,54 +1,52 @@
-# État final — 14 novembre 2026
+# État livré — 15 novembre 2026
 
-L'application est livrée dans le dépôt et dans `dist/`, prête pour un hébergement
-statique indépendant. Aucun déploiement distant n'a été effectué.
+L’application et `dist/` intègrent l’encoche et la cale. Aucun déploiement distant.
 
-## Réalisé et vérifié
+## Décisions utilisateur et réalisation
 
-- `peigne.scad` original inchangé ; valeurs initiales lues depuis ce fichier.
-- Formulaire, validations, SVG fidèle une/deux pièces, cotes, bague optionnelle,
-  agrandissement au clavier et au toucher, interface responsive.
-- WASM local `@lofcz/openscad-wasm@0.0.2`, Manifold, Worker, police DejaVu locale,
-  téléchargement réel, annulation et gestion d'erreurs.
-- Identité du blog examinée réellement : thème Fjalla, Fjalla One / Open Sans,
-  corail et gris bleuté. Polices web locales et contrastes adaptés.
-- 36 configurations de validation comparées aux assertions natives.
-- 10 profils SVG comparés aux exports OpenSCAD ; écart maximal < 0,000561 mm.
-- 5 variantes STL dans Chromium et Firefox, comparées à OpenSCAD 2021.01 :
-  défaut, sans inscriptions, trous, fraisures, inscriptions+trous+fraisures.
-- Tests mobiles 320/390 px, erreurs de paramètres / police / compilation,
-  instantané des paramètres au clic, réinitialisation, annulation, réseau local.
-- axe-core : aucun problème détecté sur les états initial, invalide, fixations.
-- Le paquet `dist/` a été servi et testé dans un sous-répertoire HTTP, avec
-  téléchargement effectif et sans requête externe.
+- Encoche rectangulaire, sans bosse, début à W du coin arrière côté puzzle mâle
+  (x=0). Largeur 2W exacte, profondeur 10+j ; aucun jeu latéral.
+- `encoche_calage=true` par défaut, désactivable pour les modules trop courts.
+- `ajouter_cale=false`, option indépendante : carré 20x20, trou central
+  `diametre_vis`, languette Wx10 sans jeu, épaisseur du peigne, sans fraisure.
+- Placement entre les doigts si possible, rotation examinée aussi ; sinon minimum
+  de surface parmi 8 placements extérieurs. Séparation nominale 2 mm.
+- Le STL contient un peigne et éventuellement une cale, même en aperçu assemblé.
+- URL complète déplacée sur une tranche arrière intacte ; texte du dessus dans
+  le dos plein. Puzzle et doigts inchangés. Assertions SCAD / validations JS ajoutées.
+- Le modèle initial est dans `tests/fixtures/peigne-original.scad`.
 
-## Différence connue à conserver dans les communications
+## Vérifications passées
 
-Les gravures diffèrent légèrement en placement par rapport à OpenSCAD 2021.01 :
-les contours de caractères correspondent (écart de forme < 0,002442 mm), mais
-le déplacement maximal atteint 0,500479 mm sur le dessus et 0,940944 mm sur l'URL.
-Les parties mécaniques concordent à moins de 0,000494 mm dans les tests STL.
-Ne pas prétendre à une égalité stricte des STL gravés avec OpenSCAD 2021.01.
-Aucun essai physique Android/Windows, impression ou usinage n'a été effectué.
+- 47 configurations JS / assertions SCAD.
+- 17 profils JS / natifs : écart maximal < 0,000561 mm.
+- Test indépendant de course de calage et conservation du profil original.
+- 20 téléchargements Chromium / Firefox : suites browser.py, browser_options.py,
+  browser_calage.py. STL comparés aux références natives du modèle modifié.
+- Cale : deux solides fermés, volume, encombrement, trou traversant ; placements
+  intérieur, extérieur, tourné ; gravures+fixations combinées.
+- Mobile 320/390 px, zoom, annulation, erreurs, absence de police, réseau local.
 
-## Fichiers utiles
+## Limites
 
-- `README.md` : lancement, déploiement, maintenance et limites.
-- `VALIDATION.md` : mesures et tests réellement exécutés.
-- `THIRD_PARTY_NOTICES.md`, `LICENSE-APP.txt` : licences du nouveau code et tiers.
-- `vendor/openscad/BUILD.json` : version et empreintes.
-- `vendor/openscad/SOURCES.tar.gz` : environ 452 Mo de sources correspondantes,
-  dépendances et sous-modules, patchs et sources de repli Meson incluses.
-  L'archive n'est jamais chargée automatiquement par l'application.
-- `test-results/` : STL natifs/navigateur, résultats JSON et captures.
-- `scripts/install-wasm.py` : récupération reproductible du binaire et des sources.
-- `scripts/package.py` : vérification puis préparation de `dist/`.
+Les gravures diffèrent en placement d’OpenSCAD 2021.01 : jusqu’à 0,500480 mm sur
+le dessus et 0,413989 mm sur l’URL actuelle. Formes de caractères concordantes
+après translation (<0,002435 mm) ; mécanique <0,000494 mm. Aucun essai d’impression
+ou d’usinage physique. Voir VALIDATION.md pour les résultats et leur portée.
 
-Les sources de développement téléchargées sont dans `.build/` (ignoré).
-L'environnement de test est `.venv/` (ignoré), Playwright 1.65.2 ; navigateurs dans
-`/tmp/peigne-playwright`. Dans cet environnement, Firefox a nécessité une exécution
-hors du bac à sable, autorisée via la demande d'escalade. Les tests fonctionnent
-normalement depuis un terminal non restreint.
+## Reprendre
 
-Aucun commit n'a été créé : `.git` n'était pas un dépôt exploitable dans cette
-session. Le travail est conservé dans les fichiers du projet.
+- README.md : lancement, déploiement, calage, maintenance et licences.
+- `python3 scripts/package.py` régénère dist/ après vérification du moteur.
+- `gjs -m tests/validate-parameters.js`, `python3 tests/compare-profiles.py`,
+  `python3 tests/calage-mechanics.py`.
+- `.venv/bin/python tests/browser.py`, `tests/browser_options.py`,
+  `tests/browser_calage.py` : serveurs locaux temporaires, navigateurs réels.
+- Playwright 1.65.2, navigateurs dans `~/.cache/ms-playwright` (plus dans /tmp).
+- Les suites régénèrent leurs références STL ; cela prend plusieurs minutes pour
+  les gravures dans OpenSCAD natif. Les résultats sont dans test-results/.
+- Moteur local @lofcz/openscad-wasm@0.0.2 / Manifold ; polices locales.
+  Archive vendor/openscad/SOURCES.tar.gz (~452 Mo) à conserver dans la distribution.
+  Ignorée dans Git ; scripts/install-wasm.py permet de la régénérer.
+- .gitignore exclut construction, distribution, tests générés, caches et archive.
+- Aucune infrastructure serveur de calcul. Aucun commit créé par cette passe.

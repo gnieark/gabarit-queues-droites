@@ -13,7 +13,7 @@ if __name__=='__main__':
     OUTPUT.mkdir(exist_ok=True)
     overrides={'inscriptions':True,'trous_fixation':True,'fraisure_vis':True}
     reference=OUTPUT/'combined-native.stl'
-    if not reference.exists():reference=native('combined',overrides)
+    reference=native('combined',overrides)
     server=ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Handler,directory=str(ROOT)))
     threading.Thread(target=server.serve_forever,daemon=True).start()
     results=[]
