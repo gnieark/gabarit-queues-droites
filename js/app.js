@@ -148,7 +148,7 @@ function update() {
   $('calage-help').textContent = current.encoche_calage
     ? 'Fixez la cale par sa vis. Placez un flanc de la languette contre un côté de l’encoche, puis faites coulisser le peigne jusqu’à l’autre butée : le déplacement nominal vaut une largeur de queue. Immobilisez le peigne avant chaque usinage.'
     : 'Pour la contre-pièce, repérez un décalage d’une largeur de queue, par exemple avec une cale ou une butée.';
-  $('stl-content').textContent = `Le STL contient un seul peigne${current.ajouter_cale ? ' et une cale séparée' : ''}, même si l’aperçu montre deux modules. Le calcul s’effectue dans votre navigateur.`;
+  $('stl-content').textContent = `Le STL contient un seul peigne${current.ajouter_cale ? ' et une cale séparée' : ''}, même si l’aperçu montre deux modules.`;
   if (previewLimited) $('preview-caption').textContent = 'L’aperçu est masqué au-delà de 200 dents pour préserver la réactivité. Le calcul STL reste disponible, dans les limites de mémoire de votre navigateur.';
 }
 

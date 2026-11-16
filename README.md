@@ -67,6 +67,7 @@ disponibilité lors de la redistribution ; ne pas omettre les notices de `vendor
 | Fichier | Rôle |
 | --- | --- |
 | `index.html`, `css/style.css` | Structure accessible, présentation inspirée du thème Fjalla du blog |
+| `images/` | Illustration de l’assemblage, incluse dans le paquet statique |
 | `js/parameters.js` | Métadonnées du formulaire, lecture des valeurs SCAD, validations, dimensions dérivées |
 | `js/geometry.js` | Traduction des opérations 2D du modèle avec Clipper |
 | `js/preview.js` | Construction du SVG et des cotes ; agrandissement disponible sur mobile |

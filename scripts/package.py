@@ -6,7 +6,7 @@ from pathlib import Path
 import shutil
 
 root=Path(__file__).resolve().parents[1]
-required=['vendor/openscad/openscad.js','vendor/openscad/openscad.wasm.js',
+required=['images/assemblage-bois-queues-droites.png','vendor/openscad/openscad.js','vendor/openscad/openscad.wasm.js',
           'vendor/openscad/openscad.wasm','vendor/openscad/COPYING',
           'vendor/openscad/SOURCES.tar.gz','vendor/openscad/BUILD.json',
           'vendor/fonts/DejaVuSansMono.ttf','vendor/fonts/LICENSE.txt']
@@ -23,7 +23,7 @@ if (vendor/'openscad.wasm').read_bytes()[:4]!=b'\0asm':
     raise SystemExit('Binaire WebAssembly invalide.')
 dist=root/'dist'
 dist.mkdir(exist_ok=True)
-for folder in ['css','js','vendor']:
+for folder in ['css','js','images','vendor']:
     shutil.copytree(root/folder,dist/folder,dirs_exist_ok=True)
 for filename in ['index.html','peigne.scad','README.md','LICENSE.md','LICENSE-APP.txt','THIRD_PARTY_NOTICES.md','VALIDATION.md']:
     shutil.copy2(root/filename,dist/filename)

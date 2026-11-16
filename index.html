@@ -17,10 +17,19 @@
   </header>
   <main>
     <div class="introduction">
-      <p class="eyebrow">À l’atelier · Menuiserie & impression 3D</p>
+      <p class="eyebrow">Menuiserie & impression 3D</p>
       <h1>Générateur de gabarits pour queues droites à la défonceuse</h1>
-      <p>Des entailles régulières qui s’emboîtent : c’est le principe des queues droites. La bague à copier de la défonceuse suit les ouvertures d’un peigne pour guider la fraise.</p>
-      <p>Adaptez ici le gabarit à votre fraise, votre bague et aux dimensions de votre assemblage. Les raccords puzzle permettent d’assembler plusieurs modules pour travailler sur une plus grande largeur. Téléchargez ensuite le fichier STL et ouvrez-le dans votre logiciel de tranchage pour l’imprimer en 3D.</p>
+      <div class="introduction-content">
+        <img class="introduction-image" src="images/assemblage-bois-queues-droites.png"
+             width="1445" height="1088"
+             alt="Deux planches assemblées à angle droit par des queues droites.">
+        <div class="introduction-text">
+          <p>Des dents et des entailles régulières qui s’emboîtent : c’est le principe des queues droites.</p>
+          <p>Plusieurs méthodes permettent de les réaliser : outils à main, scie sur table avec un chariot, ou défonceuse avec une bague à copier et un guide en forme de peigne.</p> 
+          <p>Les dimensions du peigne dépendent de la largeur souhaitée des queues, du diamètre extérieur de la bague et du diamètre de la fraise.</p>
+          <p>Adaptez ici le peigne à vos besoins. Les raccords puzzle permettent d’assembler plusieurs modules pour travailler sur une plus grande largeur. Téléchargez ensuite le fichier 3D (STL) pour imprimer le guide.</p>
+        </div>
+      </div>
     </div>
     <noscript><p class="notice error">JavaScript est nécessaire pour personnaliser le gabarit et générer le STL. Le <a href="peigne.scad" download>modèle OpenSCAD</a> reste disponible.</p></noscript>
     <div id="boot-status" role="status">Chargement du modèle…</div>
@@ -50,9 +59,9 @@
           <p id="calage-help" class="small counterpiece"></p>
           <div id="validation" aria-live="polite" aria-atomic="true"></div>
           <div class="download-area">
+            <p id="stl-content" class="small"></p>
             <button type="button" id="download" class="button-primary">Télécharger le STL</button>
             <button type="button" id="cancel" class="button-secondary" hidden>Annuler</button>
-            <p id="stl-content" class="small"></p>
             <p id="generation-status" role="status" aria-live="polite"></p>
             <a id="download-again" hidden>Télécharger à nouveau ce STL</a>
             <details id="compile-details" hidden><summary>Détails du calcul</summary><pre id="compile-log"></pre></details>
@@ -60,15 +69,14 @@
         </div>
       </section>
     </div>
-    <section class="notes" aria-labelledby="notes-title">
-      <h2 id="notes-title">Du gabarit à l’atelier</h2>
-      <p>La longueur des doigts correspond à leur partie droite, hors extrémités arrondies. Elle ne règle pas la profondeur de coupe. Les inscriptions rappellent les diamètres et la largeur des queues ; l’adresse du blog est gravée sur la tranche arrière.</p>
-      <p>L’encoche arrière et la cale optionnelle permettent de déplacer le peigne d’une largeur de queue. Le jeu est réservé au fond de l’encoche ; ses deux côtés servent de butées. Cette cote est nominale : vérifiez les dimensions après impression.</p>
-      <p>Avant votre assemblage, vérifiez l’emboîtement des modules imprimés et faites un essai sur une chute avec votre fraise et votre bague.</p>
-      <p>Sur le blog : <a href="https://blog-du-grouik.tinad.fr/post/2026/11/09/Dessiner-des-gabarits-pour-bague-%C3%A0-copier-d%C3%A9fonceuse">comprendre le dessin d’un gabarit pour bague à copier</a>.</p>
-      <p><a href="peigne.scad" download>Télécharger le modèle OpenSCAD</a> · <a href="README.md">Documentation et installation</a></p>
-    </section>
   </main>
-  <footer><a href="https://blog-du-grouik.tinad.fr/">Blog du grouik</a> · Un outil pour l’atelier, par Gnieark. <a href="THIRD_PARTY_NOTICES.md">Logiciels libres et licences</a> · <a href="vendor/openscad/SOURCES.tar.gz" download>Sources d’OpenSCAD WASM et de ses dépendances</a></footer>
+  <footer>
+    <a href="peigne.scad" download>Télécharger le modèle OpenSCAD</a><br/>
+    Sur le blog : <a href="https://blog-du-grouik.tinad.fr/post/2026/11/09/Dessiner-des-gabarits-pour-bague-%C3%A0-copier-d%C3%A9fonceuse">comprendre le dessin d’un gabarit pour bague à copier</a><br/>
+    <a href="https://github.com/gnieark/gabarit-queues-droites">Code source de l’outil et de la page web</a><br/>
+    <a href="THIRD_PARTY_NOTICES.md">Logiciels libres et licences utilisées</a><br/>
+    <a href="vendor/openscad/SOURCES.tar.gz" download>Sources d’OpenSCAD WASM et de ses dépendances</a><br/>
+    
+  </footer>
 </body>
 </html>
